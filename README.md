@@ -34,10 +34,10 @@ const { spawnWebpack } = require('webpack-events');
 const webpackServer = spawnWebpack(['--watch', '--config', 'server/webpack.config.js']);
 const webpackClient = spawnWebpack(['--watch', '--config', 'client/webpack.config.js']);
 
-Promise.all(
+Promise.all([
     webpackServer.once('built-initial'),
     webpackClient.once('built-initial')
-).then(() => {
+]).then(() => {
     // start server
     // start browser-sync
 });
