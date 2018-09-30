@@ -35,8 +35,8 @@ const webpackServer = spawnWebpack(['--watch', '--config', 'server/webpack.confi
 const webpackClient = spawnWebpack(['--watch', '--config', 'client/webpack.config.js']);
 
 Promise.all(
-    webpackServer.toPromise('built-initial'),
-    webpackClient.toPromise('built-initial')
+    webpackServer.once('built-initial'),
+    webpackClient.once('built-initial')
 ).then(() => {
     // start server
     // start browser-sync
