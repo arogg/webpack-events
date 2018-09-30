@@ -1,0 +1,14 @@
+{
+    "files.exclude": {
+        "build": true,
+        "node_modules": true
+    },
+    "spellright.language": [
+        ""
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
+}

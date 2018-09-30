@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "moduleResolution": "node",
+        "target": "es6",
+        "module": "commonjs",
+        "rootDir": "src",
+        "outDir": "build",
+        "declaration": true
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
