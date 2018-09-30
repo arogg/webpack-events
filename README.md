@@ -1,13 +1,19 @@
 # webpack-events
 
-Define what to do at different stages of a webpack build/watch process (outside of webpack itsself)
+Define what to do at different stages of a webpack build/watch process (outside of webpack itself)
 
 ## Motivation
 
 - There are several things that you could want to do while webpack runs at different stages of the webpack run, e.g. (re-)starting servers, browser-sync, etc.
-- Oftentimes you don't want to hardcode that logic into the webpack config, because it's inpractical or you want separation of concerns.
+- Oftentimes you don't want to hardcode that logic into the webpack config, because it's impractical or you want separation of concerns.
 - Maybe you want to coordinate multiple webpack builds (e.g. server and client) and want something to happen once every webpack build is at a certain stage.
 - Order is often important. Maybe something only works when started after something else.
+
+## Installation
+
+```
+npm i webpack-events
+```
 
 ## Usage
 
@@ -83,6 +89,14 @@ Returns a promise that resolves when the event occurs.
 ### WebpackProcess.childProcess
 
 The instance of the [`execa`](https://www.npmjs.com/package/execa) child process instance.
+
+## Contributing
+
+### Tests
+
+```
+npm run test
+```
 
 ## TypeScript
 

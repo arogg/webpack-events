@@ -4,11 +4,11 @@
         "node_modules": true
     },
     "spellright.language": [
-        ""
+        "en"
     ],
     "spellright.documentTypes": [
-        "markdown",
         "latex",
-        "plaintext"
+        "plaintext",
+        "markdown"
     ]
 }
