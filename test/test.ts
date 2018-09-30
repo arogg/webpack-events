@@ -12,7 +12,7 @@ describe('plugin', function () {
 
     async function run(args?: string[], callback?: () => void | boolean, timeout?: number) {
         let evs = 0;
-        const cp = spawnWebpack((args || []).concat(['--mode', 'development']), { cwd: wpdir, timeout, reject: false }).on('built', () => {
+        const cp = spawnWebpack((args || []).concat(['--mode', 'development']), { cwd: wpdir, timeout, reject: false, extendEnv: false }).on('built', () => { // extendEnv needed since else somehow cannot compile webpack.config.ts in tests (maybe because of cross-env package?)
             evs++;
             const result = callback && callback();
             if (result === true) {

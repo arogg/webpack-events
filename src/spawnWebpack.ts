@@ -9,28 +9,29 @@ import { WebpackProcess } from './webpackProcess';
  */
 export function spawnWebpack(args?: string[], options?: execa.Options) {
 
-    options = options || {};
-    const cwd = options.cwd || process.cwd();
+    const cmd = 'node';
 
-    const std = options.stdio || 'pipe';
-    const stdo = Array.isArray(std) ? std : [std, std, std];
-    const baseOptions: execa.Options = {
-        stdio: stdo.indexOf('ipc') !== -1 ? stdo : stdo.concat(['ipc'])
+    args = args || [];
+    let webpackCli: string;
+    try {
+        const cwd = options && options.cwd || process.cwd();
+        webpackCli = require.resolve('webpack-cli', { paths: [cwd] });
+    } catch {
+        throw new Error('Cannot find webpack-cli in local node_modules');
     }
-    const finalOptions = { ...options, ...baseOptions, extendEnv: false } as execa.Options; // extendEnv needed since else somehow cannot compile webpack.config.ts in tests (maybe because of cross-env package?)
+    args = [webpackCli, ...args];
+
+    options = options || {};
+    let stdio = options.stdio || 'pipe';
+    stdio = Array.isArray(stdio) ? stdio : [stdio, stdio, stdio];
+    stdio = stdio.indexOf('ipc') !== -1 ? stdio : stdio.concat(['ipc']);
+    options = { ...options, stdio };
 
     // don't use npm-which package here since that resolves to .cmd file in node_modules/.bin dir and with that file ipc gives error (bad file descriptor)
-    const procArgs = ['node'] as any[];
-    args && args.unshift(require.resolve('webpack-cli', { paths: [cwd] })) // todo exception if not found
-    args && procArgs.push(args);
-    procArgs.push(finalOptions);
 
-    let child;
-    if (procArgs.length === 2) { // todo
-        child = execa(procArgs[0], procArgs[1]) as execa.ExecaChildProcess;
-    } else {
-        child = execa(procArgs[0], procArgs[1], procArgs[2]) as execa.ExecaChildProcess;
-    }
+    const allArgs = [cmd, args, options];
+    // console.log(JSON.stringify(allArgs,null,4));
+    const child = execa.apply(execa, allArgs);
 
     return new WebpackProcess(child);
 }
