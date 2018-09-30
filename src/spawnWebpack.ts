@@ -1,4 +1,3 @@
-import { InternalWebpackEvent, allInternalWebpackEvents } from './events';
 import * as execa from 'execa';
 import { WebpackProcess } from './webpackProcess';
 
@@ -9,7 +8,7 @@ import { WebpackProcess } from './webpackProcess';
  */
 export function spawnWebpack(args?: string[], options?: execa.Options) {
 
-    const cmd = 'node';
+    const cmd = 'node';// don't use npm-which package here since that resolves to .cmd file in node_modules/.bin dir and with that file ipc gives error (bad file descriptor)
 
     args = args || [];
     let webpackCli: string;
@@ -22,15 +21,18 @@ export function spawnWebpack(args?: string[], options?: execa.Options) {
     args = [webpackCli, ...args];
 
     options = options || {};
-    let stdio = options.stdio || 'pipe';
-    stdio = Array.isArray(stdio) ? stdio : [stdio, stdio, stdio];
-    stdio = stdio.indexOf('ipc') !== -1 ? stdio : stdio.concat(['ipc']);
+    const DEFAULT = 'pipe';
+    let stdio: typeof options.stdio = options.stdio || DEFAULT;
+    if (!Array.isArray(stdio)) {
+        stdio = [stdio, stdio, stdio, 'ipc'] as any[];
+    } else if (stdio.indexOf('ipc') === -1) {
+        while (stdio.length < 3)
+            stdio.push(DEFAULT);
+        stdio.push('ipc');
+    }
     options = { ...options, stdio };
 
-    // don't use npm-which package here since that resolves to .cmd file in node_modules/.bin dir and with that file ipc gives error (bad file descriptor)
-
     const allArgs = [cmd, args, options];
-    // console.log(JSON.stringify(allArgs,null,4));
     const child = execa.apply(execa, allArgs);
 
     return new WebpackProcess(child);
