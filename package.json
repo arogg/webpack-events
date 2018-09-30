@@ -1,6 +1,6 @@
 {
   "name": "webpack-events",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Define what to do at different stages of a webpack build/watch process (outside of webpack itsself)",
   "main": "build/index.js",
   "types": "build/index.d.ts",
