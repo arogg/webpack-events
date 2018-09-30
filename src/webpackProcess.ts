@@ -28,17 +28,27 @@ export class WebpackProcess {
         }
     }
 
+    /**
+     * Subscribe to a webpack event
+     * @param event The event to subscribe to
+     * @param callback Called when the event occurs
+     */
     on(event: WebpackEvent, callback: () => void): WebpackProcess {
         this.listeners[event].add(callback);
         return this;
     }
 
+    /**
+     * Unsubscribe from an event
+     * @param event The event to unsubscribe from
+     * @param callback The callback that was passed to {@link #on}
+     */
     off(event: WebpackEvent, callback: () => void): WebpackProcess {
         this.listeners[event].delete(callback);
         return this;
     }
 
-    once(event: WebpackEvent, callback: () => void): WebpackProcess {
+    private onceCallback(event: WebpackEvent, callback: () => void): WebpackProcess {
         const listener = () => {
             this.off(event, listener);
             callback();
@@ -46,9 +56,13 @@ export class WebpackProcess {
         return this.on(event, listener);
     }
 
-    toPromise(event: WebpackEvent): Promise<void> {
+    /**
+     * Subscribe to a single occurance of a webpack event
+     * @param event The event to subscribe to
+     */
+    once(event: WebpackEvent): Promise<void> {
         return new Promise(resolve => {
-            this.once(event, resolve)
+            this.onceCallback(event, resolve)
         })
     }
 }

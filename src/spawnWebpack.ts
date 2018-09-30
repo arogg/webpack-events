@@ -2,6 +2,11 @@ import { InternalWebpackEvent, allInternalWebpackEvents } from './events';
 import * as execa from 'execa';
 import { WebpackProcess } from './webpackProcess';
 
+/**
+ * Finds and runs the local webpack installation asynchronously
+ * @param args The command line arguments passed to webpack
+ * @param options The arguments passed to execa
+ */
 export function spawnWebpack(args?: string[], options?: execa.Options) {
 
     options = options || {};

@@ -74,17 +74,11 @@ See [`WebpackProcess.on`](#on) for a parameter description.
 
 Unsubscribes from an event.
 
-### WebpackProcess.once(event, callback)
+### WebpackProcess.once(event)
 
 See [`WebpackProcess.on`](#on) for a parameter description.
 
-Subscribes to an event and unsubscribe after the first instance of the event.
-
-### WebpackProcess.toPromise(event)
-
-See [`WebpackProcess.on`](#on) for a parameter description.
-
-Returns a promise that resolves when the event occurs.
+Returns a promise that resolves when the event occurs (once).
 
 ### WebpackProcess.childProcess
 
